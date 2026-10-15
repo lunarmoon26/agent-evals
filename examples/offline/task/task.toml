@@ -1,0 +1,4 @@
+version = "1.0"
+
+[verifier]
+environment_mode = "separate"

@@ -1,0 +1,667 @@
+{
+  "$defs": {
+    "AgentSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]{0,127}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "instructions_component": {
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]{0,127}$",
+          "title": "Instructions Component",
+          "type": "string"
+        },
+        "model": {
+          "$ref": "#/$defs/ModelSpec"
+        }
+      },
+      "required": [
+        "id",
+        "model",
+        "instructions_component"
+      ],
+      "title": "AgentSpec",
+      "type": "object"
+    },
+    "Artifact": {
+      "additionalProperties": false,
+      "properties": {
+        "expected_digest": {
+          "anyOf": [
+            {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Expected Digest"
+        },
+        "path": {
+          "title": "Path",
+          "type": "string"
+        }
+      },
+      "required": [
+        "path"
+      ],
+      "title": "Artifact",
+      "type": "object"
+    },
+    "Campaign": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]{0,127}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "policy": {
+          "$ref": "#/$defs/Policy"
+        },
+        "repetitions": {
+          "exclusiveMinimum": 0,
+          "title": "Repetitions",
+          "type": "integer"
+        },
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        },
+        "subjects": {
+          "items": {
+            "$ref": "#/$defs/Subject"
+          },
+          "minItems": 1,
+          "title": "Subjects",
+          "type": "array"
+        },
+        "tasks": {
+          "items": {
+            "$ref": "#/$defs/Task"
+          },
+          "minItems": 1,
+          "title": "Tasks",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "subjects",
+        "tasks",
+        "repetitions",
+        "policy"
+      ],
+      "title": "Campaign",
+      "type": "object"
+    },
+    "Component": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact": {
+          "$ref": "#/$defs/Artifact"
+        },
+        "destination": {
+          "title": "Destination",
+          "type": "string"
+        },
+        "id": {
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]{0,127}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "instructions",
+            "skill",
+            "plugin",
+            "tool",
+            "memory",
+            "source"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "location": {
+          "enum": [
+            "home",
+            "workspace"
+          ],
+          "title": "Location",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "artifact",
+        "location",
+        "destination"
+      ],
+      "title": "Component",
+      "type": "object"
+    },
+    "FileEntry": {
+      "additionalProperties": false,
+      "properties": {
+        "digest": {
+          "anyOf": [
+            {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Digest"
+        },
+        "executable": {
+          "default": false,
+          "title": "Executable",
+          "type": "boolean"
+        },
+        "kind": {
+          "enum": [
+            "file",
+            "directory"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "size": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Size",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "path",
+        "kind"
+      ],
+      "title": "FileEntry",
+      "type": "object"
+    },
+    "JsonValue": {},
+    "LockPayload": {
+      "additionalProperties": false,
+      "properties": {
+        "blockers": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Blockers",
+          "type": "array"
+        },
+        "campaign": {
+          "$ref": "#/$defs/Campaign"
+        },
+        "contract_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Contract Version",
+          "type": "integer"
+        },
+        "planner_version": {
+          "const": "0.1.0",
+          "default": "0.1.0",
+          "title": "Planner Version",
+          "type": "string"
+        },
+        "snapshots": {
+          "additionalProperties": {
+            "$ref": "#/$defs/Snapshot"
+          },
+          "title": "Snapshots",
+          "type": "object"
+        },
+        "subject_digests": {
+          "patternProperties": {
+            "^[a-zA-Z0-9][a-zA-Z0-9._-]{0,127}$": {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            }
+          },
+          "title": "Subject Digests",
+          "type": "object"
+        },
+        "task_digests": {
+          "patternProperties": {
+            "^[a-zA-Z0-9][a-zA-Z0-9._-]{0,127}$": {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            }
+          },
+          "title": "Task Digests",
+          "type": "object"
+        }
+      },
+      "required": [
+        "campaign",
+        "snapshots",
+        "subject_digests",
+        "task_digests",
+        "blockers"
+      ],
+      "title": "LockPayload",
+      "type": "object"
+    },
+    "MemoryPolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "mode": {
+          "default": "disabled",
+          "enum": [
+            "disabled",
+            "trial-private"
+          ],
+          "title": "Mode",
+          "type": "string"
+        },
+        "seed": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Artifact"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "seed_audit": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Artifact"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "service_image": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Service Image"
+        }
+      },
+      "title": "MemoryPolicy",
+      "type": "object"
+    },
+    "ModelSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "immutable_revision": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Immutable Revision"
+        },
+        "model": {
+          "minLength": 1,
+          "title": "Model",
+          "type": "string"
+        },
+        "provider": {
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]{0,127}$",
+          "title": "Provider",
+          "type": "string"
+        },
+        "settings": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Settings",
+          "type": "object"
+        }
+      },
+      "required": [
+        "provider",
+        "model"
+      ],
+      "title": "ModelSpec",
+      "type": "object"
+    },
+    "Policy": {
+      "additionalProperties": false,
+      "properties": {
+        "agent_seconds": {
+          "exclusiveMinimum": 0,
+          "title": "Agent Seconds",
+          "type": "integer"
+        },
+        "backend": {
+          "const": "harbor",
+          "default": "harbor",
+          "title": "Backend",
+          "type": "string"
+        },
+        "concurrency": {
+          "default": 1,
+          "exclusiveMinimum": 0,
+          "title": "Concurrency",
+          "type": "integer"
+        },
+        "cpus": {
+          "exclusiveMinimum": 0,
+          "title": "Cpus",
+          "type": "integer"
+        },
+        "harbor_revision": {
+          "pattern": "^[0-9a-f]{40}$",
+          "title": "Harbor Revision",
+          "type": "string"
+        },
+        "intent": {
+          "default": "pilot",
+          "enum": [
+            "pilot",
+            "scored"
+          ],
+          "title": "Intent",
+          "type": "string"
+        },
+        "memory_mb": {
+          "exclusiveMinimum": 0,
+          "title": "Memory Mb",
+          "type": "integer"
+        },
+        "protocol_artifacts": {
+          "patternProperties": {
+            "^[a-zA-Z0-9][a-zA-Z0-9._-]{0,127}$": {
+              "$ref": "#/$defs/Artifact"
+            }
+          },
+          "title": "Protocol Artifacts",
+          "type": "object"
+        },
+        "provider_hosts": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Provider Hosts",
+          "type": "array"
+        },
+        "reliability_k": {
+          "default": 1,
+          "exclusiveMinimum": 0,
+          "title": "Reliability K",
+          "type": "integer"
+        },
+        "required_evidence": {
+          "items": {
+            "enum": [
+              "configuration",
+              "isolation",
+              "grading",
+              "usage",
+              "delegation"
+            ],
+            "type": "string"
+          },
+          "title": "Required Evidence",
+          "type": "array"
+        },
+        "sandbox": {
+          "const": "docker",
+          "default": "docker",
+          "title": "Sandbox",
+          "type": "string"
+        },
+        "scheduling": {
+          "const": "task-repeat-subject",
+          "default": "task-repeat-subject",
+          "title": "Scheduling",
+          "type": "string"
+        },
+        "setup_seconds": {
+          "exclusiveMinimum": 0,
+          "title": "Setup Seconds",
+          "type": "integer"
+        },
+        "state": {
+          "const": "cold-start",
+          "default": "cold-start",
+          "title": "State",
+          "type": "string"
+        },
+        "statistics": {
+          "const": "descriptive",
+          "default": "descriptive",
+          "title": "Statistics",
+          "type": "string"
+        },
+        "verifier": {
+          "const": "separate-no-network",
+          "default": "separate-no-network",
+          "title": "Verifier",
+          "type": "string"
+        },
+        "verifier_seconds": {
+          "exclusiveMinimum": 0,
+          "title": "Verifier Seconds",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "harbor_revision",
+        "agent_seconds",
+        "setup_seconds",
+        "verifier_seconds",
+        "cpus",
+        "memory_mb",
+        "required_evidence"
+      ],
+      "title": "Policy",
+      "type": "object"
+    },
+    "Snapshot": {
+      "additionalProperties": false,
+      "properties": {
+        "digest": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Digest",
+          "type": "string"
+        },
+        "entries": {
+          "items": {
+            "$ref": "#/$defs/FileEntry"
+          },
+          "title": "Entries",
+          "type": "array"
+        },
+        "source": {
+          "title": "Source",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source",
+        "digest",
+        "entries"
+      ],
+      "title": "Snapshot",
+      "type": "object"
+    },
+    "Subject": {
+      "additionalProperties": false,
+      "properties": {
+        "components": {
+          "items": {
+            "$ref": "#/$defs/Component"
+          },
+          "title": "Components",
+          "type": "array"
+        },
+        "credential_refs": {
+          "patternProperties": {
+            "^[a-zA-Z0-9][a-zA-Z0-9._-]{0,127}$": {
+              "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]{0,127}$",
+              "type": "string"
+            }
+          },
+          "title": "Credential Refs",
+          "type": "object"
+        },
+        "delegation": {
+          "enum": [
+            "disabled",
+            "native",
+            "configured"
+          ],
+          "title": "Delegation",
+          "type": "string"
+        },
+        "harness": {
+          "enum": [
+            "codex",
+            "claude-code",
+            "opencode-v2",
+            "antigravity-cli"
+          ],
+          "title": "Harness",
+          "type": "string"
+        },
+        "id": {
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]{0,127}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "memory": {
+          "$ref": "#/$defs/MemoryPolicy"
+        },
+        "model": {
+          "$ref": "#/$defs/ModelSpec"
+        },
+        "native_settings": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Native Settings",
+          "type": "object"
+        },
+        "primary_agent": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AgentSpec"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "subagents": {
+          "items": {
+            "$ref": "#/$defs/AgentSpec"
+          },
+          "title": "Subagents",
+          "type": "array"
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "harness",
+        "version",
+        "model",
+        "delegation"
+      ],
+      "title": "Subject",
+      "type": "object"
+    },
+    "Task": {
+      "additionalProperties": false,
+      "properties": {
+        "grader": {
+          "$ref": "#/$defs/Artifact"
+        },
+        "id": {
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]{0,127}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "image": {
+          "pattern": "^[a-zA-Z0-9./:_-]+@sha256:[0-9a-f]{64}$",
+          "title": "Image",
+          "type": "string"
+        },
+        "initial_workspace": {
+          "$ref": "#/$defs/Artifact"
+        },
+        "package": {
+          "$ref": "#/$defs/Artifact"
+        },
+        "revision": {
+          "title": "Revision",
+          "type": "string"
+        },
+        "stratum": {
+          "enum": [
+            "tuning",
+            "holdout"
+          ],
+          "title": "Stratum",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "revision",
+        "package",
+        "initial_workspace",
+        "grader",
+        "image",
+        "stratum"
+      ],
+      "title": "Task",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "digest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Digest",
+      "type": "string"
+    },
+    "payload": {
+      "$ref": "#/$defs/LockPayload"
+    }
+  },
+  "required": [
+    "digest",
+    "payload"
+  ],
+  "title": "CampaignLock",
+  "type": "object"
+}

@@ -1,0 +1,116 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "agent_started": {
+      "title": "Agent Started",
+      "type": "boolean"
+    },
+    "agent_wall_seconds": {
+      "minimum": 0,
+      "title": "Agent Wall Seconds",
+      "type": "number"
+    },
+    "cleanup_succeeded": {
+      "title": "Cleanup Succeeded",
+      "type": "boolean"
+    },
+    "cost_coverage": {
+      "const": "unavailable",
+      "default": "unavailable",
+      "title": "Cost Coverage",
+      "type": "string"
+    },
+    "cost_usd": {
+      "default": null,
+      "title": "Cost Usd",
+      "type": "null"
+    },
+    "error": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Error"
+    },
+    "evidence_digest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Evidence Digest",
+      "type": "string"
+    },
+    "execution": {
+      "enum": [
+        "completed",
+        "timeout",
+        "agent-error",
+        "setup-error",
+        "cancelled"
+      ],
+      "title": "Execution",
+      "type": "string"
+    },
+    "purpose": {
+      "const": "diagnostic-native-smoke-not-scored",
+      "default": "diagnostic-native-smoke-not-scored",
+      "title": "Purpose",
+      "type": "string"
+    },
+    "request_digest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Request Digest",
+      "type": "string"
+    },
+    "revocation": {
+      "enum": [
+        "not-required",
+        "provider-accepted",
+        "failed",
+        "unverified"
+      ],
+      "title": "Revocation",
+      "type": "string"
+    },
+    "revocation_followup_required": {
+      "title": "Revocation Followup Required",
+      "type": "boolean"
+    },
+    "run_id": {
+      "pattern": "^[0-9a-f]{32}$",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "task_outcome": {
+      "enum": [
+        "passed",
+        "failed",
+        "ungraded"
+      ],
+      "title": "Task Outcome",
+      "type": "string"
+    }
+  },
+  "required": [
+    "run_id",
+    "request_digest",
+    "execution",
+    "agent_started",
+    "task_outcome",
+    "agent_wall_seconds",
+    "cleanup_succeeded",
+    "revocation",
+    "revocation_followup_required",
+    "evidence_digest"
+  ],
+  "title": "CodexLiveResult",
+  "type": "object"
+}

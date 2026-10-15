@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools==83.0.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agent-evals"
+version = "0.1.0"
+description = "Offline planning and evidence contracts for isolated agent evaluations"
+requires-python = ">=3.12"
+dependencies = ["pydantic==2.13.4"]
+
+[project.scripts]
+agent-evals = "agent_evals.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

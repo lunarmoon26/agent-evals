@@ -1,0 +1,16 @@
+.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+build/
+dist/
+*.egg-info/
+*.py[cod]
+.env
+.env.*
+!.env.example
+.eval/
+runs/
+jobs/
+artifacts/
+private/

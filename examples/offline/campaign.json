@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "id": "offline-fixture",
+  "subjects": [
+    {
+      "id": "fixture-base",
+      "harness": "codex",
+      "version": "0.0.0-offline-fixture",
+      "model": {"provider": "fixture", "model": "not-a-real-model"},
+      "delegation": "native",
+      "components": [
+        {"id": "instructions", "kind": "instructions", "artifact": {"path": "candidate/instructions.md"}, "location": "home", "destination": "AGENTS.md"}
+      ],
+      "memory": {"mode": "disabled"}
+    },
+    {
+      "id": "fixture-variant",
+      "harness": "codex",
+      "version": "0.0.0-offline-fixture",
+      "model": {"provider": "fixture", "model": "not-a-real-model", "settings": {"reasoning_effort": "high"}},
+      "delegation": "native",
+      "components": [
+        {"id": "instructions", "kind": "instructions", "artifact": {"path": "candidate/instructions.md"}, "location": "home", "destination": "AGENTS.md"}
+      ],
+      "memory": {"mode": "disabled"}
+    }
+  ],
+  "tasks": [
+    {
+      "id": "artifact-fixture",
+      "revision": "fixture-1",
+      "package": {"path": "task"},
+      "initial_workspace": {"path": "workspace"},
+      "grader": {"path": "grader/criteria.json"},
+      "image": "example.invalid/offline-fixture@sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "stratum": "tuning"
+    }
+  ],
+  "repetitions": 2,
+  "policy": {
+    "intent": "pilot",
+    "harbor_revision": "09f5b964f8e5075f7e52fd08c9994dfc80ad5d24",
+    "agent_seconds": 60,
+    "setup_seconds": 60,
+    "verifier_seconds": 30,
+    "cpus": 1,
+    "memory_mb": 512,
+    "provider_hosts": [],
+    "required_evidence": ["configuration", "isolation", "grading"],
+    "reliability_k": 2
+  }
+}

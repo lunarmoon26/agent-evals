@@ -1,0 +1,276 @@
+{
+  "$defs": {
+    "Measurement": {
+      "additionalProperties": false,
+      "properties": {
+        "authority": {
+          "enum": [
+            "subject",
+            "controller",
+            "provider",
+            "estimate"
+          ],
+          "title": "Authority",
+          "type": "string"
+        },
+        "coverage": {
+          "enum": [
+            "complete",
+            "partial"
+          ],
+          "title": "Coverage",
+          "type": "string"
+        },
+        "definition": {
+          "minLength": 1,
+          "title": "Definition",
+          "type": "string"
+        },
+        "evidence": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Evidence",
+          "type": "string"
+        },
+        "pricing_revision": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Pricing Revision"
+        },
+        "unit": {
+          "enum": [
+            "seconds",
+            "USD",
+            "tokens",
+            "turns",
+            "calls"
+          ],
+          "title": "Unit",
+          "type": "string"
+        },
+        "value": {
+          "minimum": 0,
+          "title": "Value",
+          "type": "number"
+        }
+      },
+      "required": [
+        "value",
+        "unit",
+        "authority",
+        "coverage",
+        "definition",
+        "evidence"
+      ],
+      "title": "Measurement",
+      "type": "object"
+    },
+    "TrialPlan": {
+      "additionalProperties": false,
+      "properties": {
+        "campaign_digest": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Campaign Digest",
+          "type": "string"
+        },
+        "reliability_group": {
+          "minimum": 0,
+          "title": "Reliability Group",
+          "type": "integer"
+        },
+        "repeat": {
+          "minimum": 0,
+          "title": "Repeat",
+          "type": "integer"
+        },
+        "slot_digest": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Slot Digest",
+          "type": "string"
+        },
+        "subject_digest": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Subject Digest",
+          "type": "string"
+        },
+        "subject_id": {
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]{0,127}$",
+          "title": "Subject Id",
+          "type": "string"
+        },
+        "task_digest": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Task Digest",
+          "type": "string"
+        },
+        "task_id": {
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]{0,127}$",
+          "title": "Task Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "campaign_digest",
+        "subject_id",
+        "subject_digest",
+        "task_id",
+        "task_digest",
+        "repeat",
+        "reliability_group",
+        "slot_digest"
+      ],
+      "title": "TrialPlan",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "cleanup": {
+      "enum": [
+        "succeeded",
+        "failed",
+        "unknown"
+      ],
+      "title": "Cleanup",
+      "type": "string"
+    },
+    "evidence": {
+      "patternProperties": {
+        "^[a-zA-Z0-9][a-zA-Z0-9._-]{0,127}$": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        }
+      },
+      "title": "Evidence",
+      "type": "object"
+    },
+    "execution": {
+      "enum": [
+        "completed",
+        "timeout",
+        "budget-exhausted",
+        "subject-error",
+        "setup-error",
+        "infrastructure-error",
+        "cancelled"
+      ],
+      "title": "Execution",
+      "type": "string"
+    },
+    "grading_authority": {
+      "anyOf": [
+        {
+          "enum": [
+            "subject",
+            "controller"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Grading Authority"
+    },
+    "grading_evidence": {
+      "anyOf": [
+        {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Grading Evidence"
+    },
+    "metrics": {
+      "patternProperties": {
+        "^[a-zA-Z0-9][a-zA-Z0-9._-]{0,127}$": {
+          "$ref": "#/$defs/Measurement"
+        }
+      },
+      "title": "Metrics",
+      "type": "object"
+    },
+    "outcome": {
+      "enum": [
+        "passed",
+        "failed",
+        "partial",
+        "ungraded"
+      ],
+      "title": "Outcome",
+      "type": "string"
+    },
+    "plan": {
+      "$ref": "#/$defs/TrialPlan"
+    },
+    "purpose": {
+      "default": "original",
+      "enum": [
+        "original",
+        "diagnostic"
+      ],
+      "title": "Purpose",
+      "type": "string"
+    },
+    "reasons": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Reasons",
+      "type": "array"
+    },
+    "retry_of": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Retry Of"
+    },
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "trial_id": {
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+      "title": "Trial Id",
+      "type": "string"
+    },
+    "validity": {
+      "enum": [
+        "valid",
+        "invalid",
+        "contaminated"
+      ],
+      "title": "Validity",
+      "type": "string"
+    }
+  },
+  "required": [
+    "trial_id",
+    "plan",
+    "execution",
+    "validity",
+    "outcome",
+    "cleanup"
+  ],
+  "title": "TrialRecord",
+  "type": "object"
+}

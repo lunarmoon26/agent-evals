@@ -1,0 +1,218 @@
+{
+  "$defs": {
+    "ControlReceipt": {
+      "additionalProperties": false,
+      "properties": {
+        "agent_wall_seconds": {
+          "minimum": 0,
+          "title": "Agent Wall Seconds",
+          "type": "number"
+        },
+        "case": {
+          "enum": [
+            "sum-oracle",
+            "sum-noop",
+            "sort-oracle",
+            "sort-noop",
+            "transform-oracle",
+            "transform-noop",
+            "fresh-a",
+            "fresh-b",
+            "timeout",
+            "artifact-symlink",
+            "artifact-oversize"
+          ],
+          "title": "Case",
+          "type": "string"
+        },
+        "cleanup_succeeded": {
+          "title": "Cleanup Succeeded",
+          "type": "boolean"
+        },
+        "control_passed": {
+          "title": "Control Passed",
+          "type": "boolean"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Error"
+        },
+        "evidence_digest": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Evidence Digest",
+          "type": "string"
+        },
+        "execution": {
+          "enum": [
+            "completed",
+            "timeout",
+            "error"
+          ],
+          "title": "Execution",
+          "type": "string"
+        },
+        "export_status": {
+          "enum": [
+            "accepted",
+            "missing",
+            "rejected",
+            "unavailable"
+          ],
+          "title": "Export Status",
+          "type": "string"
+        },
+        "task_outcome": {
+          "enum": [
+            "passed",
+            "failed",
+            "ungraded"
+          ],
+          "title": "Task Outcome",
+          "type": "string"
+        }
+      },
+      "required": [
+        "case",
+        "control_passed",
+        "execution",
+        "task_outcome",
+        "export_status",
+        "agent_wall_seconds",
+        "cleanup_succeeded",
+        "evidence_digest"
+      ],
+      "title": "ControlReceipt",
+      "type": "object"
+    },
+    "ControlRequest": {
+      "additionalProperties": false,
+      "properties": {
+        "approval": {
+          "const": "local-docker-controls-v1",
+          "title": "Approval",
+          "type": "string"
+        },
+        "cases": {
+          "items": {
+            "enum": [
+              "sum-oracle",
+              "sum-noop",
+              "sort-oracle",
+              "sort-noop",
+              "transform-oracle",
+              "transform-noop",
+              "fresh-a",
+              "fresh-b",
+              "timeout",
+              "artifact-symlink",
+              "artifact-oversize"
+            ],
+            "type": "string"
+          },
+          "maxItems": 12,
+          "minItems": 1,
+          "title": "Cases",
+          "type": "array"
+        },
+        "cpus": {
+          "const": 1,
+          "default": 1,
+          "title": "Cpus",
+          "type": "integer"
+        },
+        "harbor_revision": {
+          "const": "09f5b964f8e5075f7e52fd08c9994dfc80ad5d24",
+          "default": "09f5b964f8e5075f7e52fd08c9994dfc80ad5d24",
+          "title": "Harbor Revision",
+          "type": "string"
+        },
+        "image": {
+          "const": "python@sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1",
+          "default": "python@sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1",
+          "title": "Image",
+          "type": "string"
+        },
+        "max_agent_seconds": {
+          "const": 60,
+          "default": 60,
+          "title": "Max Agent Seconds",
+          "type": "integer"
+        },
+        "memory_mb": {
+          "const": 512,
+          "default": 512,
+          "title": "Memory Mb",
+          "type": "integer"
+        },
+        "run_id": {
+          "pattern": "^[0-9a-f]{32}$",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        },
+        "worker_lock_digest": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Worker Lock Digest",
+          "type": "string"
+        }
+      },
+      "required": [
+        "run_id",
+        "approval",
+        "worker_lock_digest",
+        "cases"
+      ],
+      "title": "ControlRequest",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "complete": {
+      "title": "Complete",
+      "type": "boolean"
+    },
+    "purpose": {
+      "const": "deterministic-boundary-controls-not-harness-evaluation",
+      "default": "deterministic-boundary-controls-not-harness-evaluation",
+      "title": "Purpose",
+      "type": "string"
+    },
+    "receipts": {
+      "items": {
+        "$ref": "#/$defs/ControlReceipt"
+      },
+      "title": "Receipts",
+      "type": "array"
+    },
+    "request": {
+      "$ref": "#/$defs/ControlRequest"
+    },
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "request",
+    "receipts",
+    "complete"
+  ],
+  "title": "ControlBatch",
+  "type": "object"
+}

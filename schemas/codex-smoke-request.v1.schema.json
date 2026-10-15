@@ -1,0 +1,105 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "agent_seconds": {
+      "const": 60,
+      "default": 60,
+      "title": "Agent Seconds",
+      "type": "integer"
+    },
+    "authentication": {
+      "const": "isolated-chatgpt-device-login",
+      "default": "isolated-chatgpt-device-login",
+      "title": "Authentication",
+      "type": "string"
+    },
+    "budget_enforcement": {
+      "const": "monitoring-target-not-hard-cap",
+      "default": "monitoring-target-not-hard-cap",
+      "title": "Budget Enforcement",
+      "type": "string"
+    },
+    "budget_usd": {
+      "const": 10,
+      "default": 10,
+      "title": "Budget Usd",
+      "type": "integer"
+    },
+    "cli_version": {
+      "const": "0.162.1",
+      "default": "0.162.1",
+      "title": "Cli Version",
+      "type": "string"
+    },
+    "cpus": {
+      "const": 1,
+      "default": 1,
+      "title": "Cpus",
+      "type": "integer"
+    },
+    "credit_fallback": {
+      "const": "allowed",
+      "title": "Credit Fallback",
+      "type": "string"
+    },
+    "delegation": {
+      "const": "native-defaults-unverified",
+      "default": "native-defaults-unverified",
+      "title": "Delegation",
+      "type": "string"
+    },
+    "harness": {
+      "const": "codex",
+      "default": "codex",
+      "title": "Harness",
+      "type": "string"
+    },
+    "memory_mb": {
+      "const": 512,
+      "default": 512,
+      "title": "Memory Mb",
+      "type": "integer"
+    },
+    "model": {
+      "const": "gpt-6.1-sol",
+      "default": "gpt-6.1-sol",
+      "title": "Model",
+      "type": "string"
+    },
+    "reasoning_effort": {
+      "const": "medium",
+      "default": "medium",
+      "title": "Reasoning Effort",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "service_tier": {
+      "const": "default",
+      "default": "default",
+      "title": "Service Tier",
+      "type": "string"
+    },
+    "task": {
+      "const": "sum-artifact-smoke-v1",
+      "default": "sum-artifact-smoke-v1",
+      "title": "Task",
+      "type": "string"
+    },
+    "trials": {
+      "const": 1,
+      "default": 1,
+      "title": "Trials",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "credit_fallback"
+  ],
+  "title": "CodexSmokeRequest",
+  "type": "object"
+}

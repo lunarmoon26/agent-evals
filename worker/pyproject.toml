@@ -1,0 +1,12 @@
+[project]
+name = "agent-evals-worker"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = ["harbor", "agent-evals"]
+
+[tool.uv.sources]
+harbor = { git = "https://github.com/harbor-framework/harbor.git", rev = "09f5b964f8e5075f7e52fd08c9994dfc80ad5d24" }
+agent-evals = { path = "..", editable = true }
+
+[tool.uv]
+package = false

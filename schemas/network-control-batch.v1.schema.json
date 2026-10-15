@@ -1,0 +1,199 @@
+{
+  "$defs": {
+    "NetworkControlReceipt": {
+      "additionalProperties": false,
+      "properties": {
+        "case": {
+          "enum": [
+            "auth-route",
+            "agent-route",
+            "proxy-stop",
+            "timeout"
+          ],
+          "title": "Case",
+          "type": "string"
+        },
+        "cleanup_succeeded": {
+          "title": "Cleanup Succeeded",
+          "type": "boolean"
+        },
+        "control_passed": {
+          "title": "Control Passed",
+          "type": "boolean"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Error"
+        },
+        "evidence_digest": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Evidence Digest",
+          "type": "string"
+        },
+        "execution": {
+          "enum": [
+            "completed",
+            "timeout",
+            "error",
+            "cancelled"
+          ],
+          "title": "Execution",
+          "type": "string"
+        },
+        "wall_seconds": {
+          "minimum": 0,
+          "title": "Wall Seconds",
+          "type": "number"
+        }
+      },
+      "required": [
+        "case",
+        "control_passed",
+        "execution",
+        "wall_seconds",
+        "cleanup_succeeded",
+        "evidence_digest"
+      ],
+      "title": "NetworkControlReceipt",
+      "type": "object"
+    },
+    "NetworkControlRequest": {
+      "additionalProperties": false,
+      "properties": {
+        "approval": {
+          "const": "socket-proxy-network-controls-v1",
+          "title": "Approval",
+          "type": "string"
+        },
+        "base_image": {
+          "const": "python@sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1",
+          "default": "python@sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1",
+          "title": "Base Image",
+          "type": "string"
+        },
+        "cases": {
+          "default": [
+            "auth-route",
+            "agent-route",
+            "proxy-stop",
+            "timeout"
+          ],
+          "maxItems": 4,
+          "minItems": 4,
+          "prefixItems": [
+            {
+              "const": "auth-route",
+              "type": "string"
+            },
+            {
+              "const": "agent-route",
+              "type": "string"
+            },
+            {
+              "const": "proxy-stop",
+              "type": "string"
+            },
+            {
+              "const": "timeout",
+              "type": "string"
+            }
+          ],
+          "title": "Cases",
+          "type": "array"
+        },
+        "cpus": {
+          "const": 1,
+          "default": 1,
+          "title": "Cpus",
+          "type": "integer"
+        },
+        "harbor_revision": {
+          "const": "09f5b964f8e5075f7e52fd08c9994dfc80ad5d24",
+          "default": "09f5b964f8e5075f7e52fd08c9994dfc80ad5d24",
+          "title": "Harbor Revision",
+          "type": "string"
+        },
+        "max_test_seconds": {
+          "const": 60,
+          "default": 60,
+          "title": "Max Test Seconds",
+          "type": "integer"
+        },
+        "memory_mb": {
+          "const": 512,
+          "default": 512,
+          "title": "Memory Mb",
+          "type": "integer"
+        },
+        "run_id": {
+          "pattern": "^[0-9a-f]{32}$",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        },
+        "sources_digest": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Sources Digest",
+          "type": "string"
+        },
+        "worker_lock_digest": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Worker Lock Digest",
+          "type": "string"
+        }
+      },
+      "required": [
+        "run_id",
+        "approval",
+        "worker_lock_digest",
+        "sources_digest"
+      ],
+      "title": "NetworkControlRequest",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "image": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Image",
+      "type": "string"
+    },
+    "purpose": {
+      "const": "network-controls-not-harness-evaluation",
+      "default": "network-controls-not-harness-evaluation",
+      "title": "Purpose",
+      "type": "string"
+    },
+    "receipts": {
+      "items": {
+        "$ref": "#/$defs/NetworkControlReceipt"
+      },
+      "title": "Receipts",
+      "type": "array"
+    },
+    "request": {
+      "$ref": "#/$defs/NetworkControlRequest"
+    }
+  },
+  "required": [
+    "request",
+    "image",
+    "receipts"
+  ],
+  "title": "NetworkControlBatch",
+  "type": "object"
+}

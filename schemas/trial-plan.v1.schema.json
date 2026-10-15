@@ -1,0 +1,57 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "campaign_digest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Campaign Digest",
+      "type": "string"
+    },
+    "reliability_group": {
+      "minimum": 0,
+      "title": "Reliability Group",
+      "type": "integer"
+    },
+    "repeat": {
+      "minimum": 0,
+      "title": "Repeat",
+      "type": "integer"
+    },
+    "slot_digest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Slot Digest",
+      "type": "string"
+    },
+    "subject_digest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Subject Digest",
+      "type": "string"
+    },
+    "subject_id": {
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]{0,127}$",
+      "title": "Subject Id",
+      "type": "string"
+    },
+    "task_digest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Task Digest",
+      "type": "string"
+    },
+    "task_id": {
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]{0,127}$",
+      "title": "Task Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "campaign_digest",
+    "subject_id",
+    "subject_digest",
+    "task_id",
+    "task_digest",
+    "repeat",
+    "reliability_group",
+    "slot_digest"
+  ],
+  "title": "TrialPlan",
+  "type": "object"
+}
